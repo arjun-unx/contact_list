@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: contactsdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: radar.64
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./contact_backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=localhost
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_NAME=contactsdb
+      - DB_PASSWORD=radar.64
+
+volumes:
+  postgres_data:
